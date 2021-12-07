@@ -1,13 +1,29 @@
+import logging
 import os
 from datetime import datetime, timezone
+
 import numpy as np
 import pandas as pd
 import tweepy
 
+logger = logging.getLogger()
+
 def get_api():
-    auth = tweepy.OAuthHandler(os.environ['TWITTER_API_KEY'], os.environ['TWITTER_API_SECRET'])
-    auth.set_access_token(os.environ['TWITTER_ACCESS_TOKEN'], os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
-    return tweepy.API(auth)
+    consumer_key = os.getenv('TWITTER_API_KEY')
+    consumer_secret = os.getenv('TWITTER_API_SECRET')
+    access_token = os.getenv('TWITTER_ACCESS_TOKEN')
+    access_token_secret = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth, wait_on_rate_limit=True)
+    try:
+        api.verify_credentials()
+    except Exception as e:
+        logger.error('Error creating API', exc_info=True)
+        raise e
+    logger.info('API created')
+    return api
 
 def get_users_from_user_ids(user_ids, chunk_size=100):
     api = get_api()

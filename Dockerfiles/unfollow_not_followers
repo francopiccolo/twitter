@@ -1,0 +1,9 @@
+FROM python:3.7-alpine
+
+WORKDIR /bots
+COPY ../config.py .
+COPY unfollow_not_followers.py ./unfollow_not_followers.py
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+CMD python -m unfollow_not_followers.unfollow_not_followers
