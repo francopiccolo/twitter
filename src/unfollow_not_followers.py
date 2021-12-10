@@ -1,6 +1,6 @@
 import tweepy
 import logging
-from .utils import get_api, get_users_from_user_ids
+from .utils.twitter import get_api, get_users_from_user_ids
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()

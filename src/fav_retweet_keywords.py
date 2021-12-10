@@ -1,6 +1,6 @@
 import tweepy
 import logging
-from src.utils import create_api
+from src.utils.twitter import create_api
 import json
 
 logging.basicConfig(level=logging.INFO)
